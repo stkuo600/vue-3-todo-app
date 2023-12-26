@@ -1,39 +1,35 @@
 <script setup lang="ts">
-class Todo {
-  constructor(
-    public id: number,
-    public title: string,
-    public done: boolean = false
-  ) {
-    this.done = false
-    this.title = title
-  }
-}
-
 import { ref } from 'vue'
+import { storeToRefs } from 'pinia'
+import Todo from './models/todo'
+import { useTodosStore } from './stores/todoStore'
+
 const newTodo = ref(new Todo(-1, '', false))
-const todos = ref(JSON.parse(localStorage.getItem('todos') || '[]'))
+const store = useTodosStore()
+
+const { todos } = storeToRefs(store)
+//const todos = ref(JSON.parse(localStorage.getItem('todos') || '[]'))
 
 const addTodo = () => {
   newTodo.value.id = todos.value.length
   todos.value.push(newTodo.value)
-  saveTodos()
+  store.saveTodos()
   newTodo.value = new Todo(-1, '', false)
 }
 
 const removeTodo = (todo: Todo) => {
   todos.value.splice(todos.value.indexOf(todo), 1)
-  saveTodos()
+  store.saveTodos()
 }
 
 const toggleTodo = (todo: Todo) => {
   todo.done = !todo.done
-  saveTodos()
+  store.saveTodos()
 }
 
-const saveTodos = () => {
-  localStorage.setItem('todos', JSON.stringify(todos.value))
-}
+// const saveTodos = () => {
+//   localStorage.setItem('todos', JSON.stringify(todos.value))
+// }
 </script>
 
 <template>
