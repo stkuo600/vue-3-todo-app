@@ -18,6 +18,7 @@ const addTodo = () => {
   newTodo.value.id = todos.value.length
   todos.value.push(newTodo.value)
   saveTodos()
+  newTodo.value = new Todo(-1, '', false)
 }
 
 const removeTodo = (todo: Todo) => {
